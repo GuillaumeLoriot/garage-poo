@@ -17,7 +17,11 @@ function selectAllCars(PDO $pdo):array
     $requete = $pdo->prepare("SELECT * FROM car;");
     $requete->execute();
     $cars = $requete->fetchAll();
-    return $cars;
+    $carsObject = [];
+    foreach($cars as $car){
+        array_push($carsObject, new Car($car["id"], $car["brand"], $car["model"], $car["horsePower"], $car["image"]));
+    }
+    return $carsObject;
 }
 
 function selectCarByID(PDO $pdo, int $id): array|false
