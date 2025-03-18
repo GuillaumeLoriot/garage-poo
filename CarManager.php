@@ -1,9 +1,8 @@
 <?php
+require_once("DatabaseManager.php");
 
-class CarManager
+class CarManager extends DatabaseManager
 {
-
-
     /**
      * Récupère toutes les voitures de la base de données.
      *
@@ -11,9 +10,9 @@ class CarManager
      *
      * @return array Tableau d'instances Car.
      */
-    public function selectAllCars(PDO $pdo): array
+    public function selectAllCars(): array
     {
-        $requete = $pdo->prepare("SELECT * FROM car;");
+        $requete = self::getConnexion()->prepare("SELECT * FROM car;");
         $requete->execute();
         $arrayCars = $requete->fetchAll();
         //Je parcours le tableau de résultats 
@@ -32,9 +31,9 @@ class CarManager
      * @param  int $id
      * @return Car
      */
-    public function selectCarByID(PDO $pdo, int $id): Car|false
+    public function selectCarByID(int $id): Car|false
     {
-        $requete = $pdo->prepare("SELECT * FROM car WHERE id = :id;");
+        $requete = self::getConnexion()->prepare("SELECT * FROM car WHERE id = :id;");
         $requete->execute([
             ":id" => $id
         ]);
@@ -54,9 +53,9 @@ class CarManager
      * @param  Car $car
      * @return bool
      */
-    public function insertCar(PDO $pdo, Car $car): bool
+    public function insertCar(Car $car): bool
     {
-        $requete = $pdo->prepare("INSERT INTO car (model,brand,horsePower,image) VALUES (:model,:brand,:horsePower,:image);");
+        $requete = self::getConnexion()->prepare("INSERT INTO car (model,brand,horsePower,image) VALUES (:model,:brand,:horsePower,:image);");
 
         $requete->execute([
             ":model" => $car->getModel(),
@@ -75,9 +74,9 @@ class CarManager
      * @param  Car $car
      * @return bool
      */
-    public function updateCarByID(PDO $pdo, Car $car): bool
+    public function updateCarByID(Car $car): bool
     {
-        $requete = $pdo->prepare("UPDATE car SET model = :model, brand = :brand, horsePower = :horsePower, image = :image WHERE id = :id;");
+        $requete = self::getConnexion()->prepare("UPDATE car SET model = :model, brand = :brand, horsePower = :horsePower, image = :image WHERE id = :id;");
         $requete->execute(
             [
                 ":model" => $car->getModel(),
@@ -98,9 +97,9 @@ class CarManager
      * @param  int $id
      * @return bool
      */
-    public function deleteCarByID(PDO $pdo, int $id): bool
+    public function deleteCarByID(int $id): bool
     {
-        $requete = $pdo->prepare("DELETE FROM car WHERE id = :id;");
+        $requete = self::getConnexion()->prepare("DELETE FROM car WHERE id = :id;");
         $requete->execute([
             ":id" => $id
         ]);
