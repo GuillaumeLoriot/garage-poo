@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
 ?>
 
-<form method="POST" action="inscription.php">
+<form method="POST" action="register.php">
 
     <span class="d-block p-2 text-bg-dark">
 
