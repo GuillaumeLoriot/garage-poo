@@ -1,7 +1,7 @@
 <?php
 require_once("functions.php");
-require_once("Car.php");
-require_once("CarManager.php");
+require_once("Model/Car.php");
+require_once("Manager/CarManager.php");
 
 // Vérifier que l'utilisateur est connécté avec la présence
 // D'un "username" en SESSION
@@ -50,7 +50,7 @@ require_once("header.php");
 
 <h1 class="text-primary">Modifier <?= $car->getBrand() ?> <?= $car->getModel() ?> </h1>
 
-<img src="images/<?= $car->getImage() ?>" alt="<?= $car->getModel() ?>">
+<img src="images/<?= $car->getBrand() ?>" alt="<?= $car->getModel() ?>">
 
 
 <form method="POST" action="update.php?id=<?= ($car->getId()) ?>">

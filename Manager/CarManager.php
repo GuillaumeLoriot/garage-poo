@@ -1,24 +1,32 @@
 <?php
 require_once("DatabaseManager.php");
 
+/**
+ * CarManager
+ * Représente un gestionnaire de la table Car
+ * Contient les méthodes et requêtes pour la table Car
+ * Hérite de DatabaseManager, donc a accès à la connexion PDO
+ * via la méthode héritée statique getConnexion()
+ */
 class CarManager extends DatabaseManager
 {
     /**
-     * Récupère toutes les voitures de la base de données.
-     *
-     * @param PDO $pdo La connexion PDO.
-     *
+     * Récupère toutes les lignes de la table Car
      * @return array Tableau d'instances Car.
      */
     public function selectAllCars(): array
     {
+        //Récupération de la connexion PDO et requête SQL
         $requete = self::getConnexion()->prepare("SELECT * FROM car;");
         $requete->execute();
+
         $arrayCars = $requete->fetchAll();
-        //Je parcours le tableau de résultats 
+        //Créer un tableau qui contiendra les objets Car
         $cars = [];
+        //Boucle sur le tableau $arrayCars pour créer les objets Car 
+        // Chaque élément du tableau $arrayCar est un tableau associatif
         foreach ($arrayCars as $arrayCar) {
-            //J'instancie un objet avec les données d'une Voiture ( tableau associatif)
+            //Istantiation d'un objet Car avec les données du tableau associatif  
             $cars[] = new Car($arrayCar["id"], $arrayCar["brand"], $arrayCar["model"], $arrayCar["horsePower"], $arrayCar["image"]);
         }
 
@@ -26,8 +34,7 @@ class CarManager extends DatabaseManager
     }
 
     /**
-     * Récupère une voiture par ID de la base de données.
-     * @param  PDO $pdo
+     * Récupère une ligne de la table Car par ID
      * @param  int $id
      * @return Car
      */
@@ -40,16 +47,18 @@ class CarManager extends DatabaseManager
 
         $arrayCar = $requete->fetch();
 
-        $carObject = new Car($arrayCar["id"], $arrayCar["brand"], $arrayCar["model"], $arrayCar["horsePower"], $arrayCar["image"]);
+        //Si pas de résultat fetch()
+        if(!$arrayCar) {
 
-        //Retourner l'instance de Car créée avec l'occurence Car de la BDD
-        return $carObject;
+            return false;
+        }
+        //Renvoyer l'instance d'un objet Car avec les données du tableau associatif
+        return new Car($arrayCar["id"], $arrayCar["brand"], $arrayCar["model"], $arrayCar["horsePower"], $arrayCar["image"]);
     }
 
     /**
      * insertCar
      *
-     * @param  PDO $pdo
      * @param  Car $car
      * @return bool
      */
@@ -70,7 +79,6 @@ class CarManager extends DatabaseManager
     /**
      * updateCarByID
      *
-     * @param  PDO $pdo
      * @param  Car $car
      * @return bool
      */
@@ -93,7 +101,6 @@ class CarManager extends DatabaseManager
     /**
      * deleteCarByID
      *
-     * @param  PDO $pdo
      * @param  int $id
      * @return bool
      */
@@ -106,5 +113,4 @@ class CarManager extends DatabaseManager
 
         return $requete->rowCount() > 0;
     }
-
 }
