@@ -45,12 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $title = "Modifier " . $car->getModel();
 require_once("header.php");
-
 ?>
 
 <h1 class="text-primary">Modifier <?= $car->getBrand() ?> <?= $car->getModel() ?> </h1>
 
-<img src="images/<?= $car->getBrand() ?>" alt="<?= $car->getModel() ?>">
+<img src="images/<?= $car->getImage() ?>" alt="<?= $car->getModel() ?>">
 
 
 <form method="POST" action="update.php?id=<?= ($car->getId()) ?>">
@@ -84,4 +83,3 @@ require_once("header.php");
 </form>
 <?php
 require_once("footer.php");
-?>
