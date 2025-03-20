@@ -1,21 +1,21 @@
 <?php
 require_once("functions.php");
-require_once("Model/Car.php"); 
+require_once("Model/Car.php");
 require_once("Manager/CarManager.php");
 
 
 // Vérifier que l'utilisateur est connécté avec la présence
 verifySession();
 //Vérifier si l'ID est présent dans l'url
-if(!isset($_GET["id"])){
+if (!isset($_GET["id"])) {
     header("Location: admin.php");
 }
 //Select by id
 $carManager = new CarManager();
-$car = $carManager->selectCarByID($_GET["id"]);
+$car = $carManager->selectByID($_GET["id"]);
 
 //Vérifier si la voiture avec l'ID existe en BDD
-if(!$car){
+if (!$car) {
     header("Location: admin.php");
 }
 
@@ -24,7 +24,7 @@ if(!$car){
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //Supprimer la voiture et rediriger
     $carManager = new CarManager();
-    $carManager->deleteCarByID($car->getId());
+    $carManager->deleteByID($car->getId());
     header("Location: admin.php?delete=ok");
 }
 
@@ -33,6 +33,8 @@ require_once("header.php");
 ?>
 
 <h1>Confirmer la suppression de <?= $car->getBrand() ?> <?= $car->getModel() ?> ?</h1>
+
+<img src="images/<?= $car->getImage(); ?>" alt="<?= $car->getModel() ?>">
 
 <form class="p-3" method="POST" action="delete.php?id=<?= $car->getId(); ?>">
     <!-- Redirection admin -->

@@ -1,5 +1,4 @@
 <?php
-
 // Class CarForm... ?
 function validateCarForm(array $errors, array $carForm): array
 {
@@ -19,8 +18,6 @@ function validateCarForm(array $errors, array $carForm): array
     
     return $errors;
 }
-
-
 
 //Class SessionChecker
 function verifySession(): void
